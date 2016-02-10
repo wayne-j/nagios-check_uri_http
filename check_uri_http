@@ -1,0 +1,28 @@
+#!/usr/bin/perl
+use URI;
+
+my $url = URI->new("$ARGV[0]");
+#print "Scheme: ", $url->scheme( ), "\n";
+$scheme = $url->scheme( );
+#print "Userinfo: ", $url->userinfo( ), "\n";
+$userinfo = $url->userinfo( );
+#print "Hostname: ", $url->host( ), "\n";
+$hostname = $url->host( );
+#print "Port: ", $url->port( ), "\n";
+$port = $url->port( );
+#print "Path: ", $url->path( ), "\n";
+$path = $url->path( );
+#print "Query: ", $url->query( ), "\n";
+$query = $url->query( );
+
+if ($query) { $query = "?$query";}
+
+if ($path eq "") { $path = undef; }
+else { $path = " -u $path$query"; }
+
+if ( $scheme eq "https" ) { $str = "./check_http -H $hostname -f ok -S".$path;}
+if ( $scheme eq "http") { $str = "./check_http -H $hostname -f ok -p $port".$path;}
+
+$result = `$str`;
+
+print $result;
