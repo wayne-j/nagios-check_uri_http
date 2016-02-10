@@ -1,6 +1,5 @@
 #!/usr/bin/perl
 use URI;
-use Capture::Tiny 'capture';
 
 my $url = URI->new("$ARGV[0]");
 #print "Scheme: ", $url->scheme( ), "\n";
