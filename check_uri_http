@@ -1,5 +1,6 @@
 #!/usr/bin/perl
 use URI;
+use Capture::Tiny 'capture';
 
 my $url = URI->new("$ARGV[0]");
 #print "Scheme: ", $url->scheme( ), "\n";
@@ -26,3 +27,5 @@ if ( $scheme eq "http") { $str = "./check_http -H $hostname -f ok -p $port".$pat
 $result = `$str`;
 
 print $result;
+$ret_code = $?>>8;
+exit "$ret_code";
