@@ -1,0 +1,10 @@
+The dream behind this was to allow myself to bulk import full URLs as hosts
+This check would parse the host address to create a logical check_http command
+
+http://search.cpan.org/~rse/lcwa-1.0.0/lib/lwp/lib/URI/URL.pm
+
+This script matches simple input:
+http(s):// www.address.com :80 /path /ppath.ext?qry=var
+
+scheme hostname port path query
+could be extended to use userinfo with -a for check_http
