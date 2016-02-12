@@ -5,6 +5,7 @@ use warnings;
 my $str = undef;
 my $args = undef;
 
+if (!$ARGV[0]) { print "no arguments provided\n"; exit 1;}
 my $url = URI->new("$ARGV[0]");
 my $scheme = $url->scheme( );
 my $userinfo = $url->userinfo( );
