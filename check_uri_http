@@ -1,30 +1,34 @@
 #!/usr/bin/perl
 use URI;
+use strict;
+use warnings;
+my $str = undef;
+my $args = undef;
 
 my $url = URI->new("$ARGV[0]");
-#print "Scheme: ", $url->scheme( ), "\n";
-$scheme = $url->scheme( );
-#print "Userinfo: ", $url->userinfo( ), "\n";
-$userinfo = $url->userinfo( );
-#print "Hostname: ", $url->host( ), "\n";
-$hostname = $url->host( );
-#print "Port: ", $url->port( ), "\n";
-$port = $url->port( );
-#print "Path: ", $url->path( ), "\n";
-$path = $url->path( );
-#print "Query: ", $url->query( ), "\n";
-$query = $url->query( );
+my $scheme = $url->scheme( );
+my $userinfo = $url->userinfo( );
+my $hostname = $url->host( );
+my $port = $url->port( );
+my $query = $url->query( );
+if ($query) { $query = "?$query"; }
+my $path = $url->path( );
+if ($path eq "") {
+        $path = undef;
+} else {
+        $path = " -u $path$query";
+}
 
-if ($query) { $query = "?$query";}
+shift @ARGV;
+if (@ARGV) { $args = " @ARGV"}
 
-if ($path eq "") { $path = undef; }
-else { $path = " -u $path$query"; }
+if ( $scheme eq "https" ) { $str = "-H $hostname -f ok -S$path$args"; }
+if ( $scheme eq "http") { $str = "-H $hostname -f ok -p $port$path$args"; }
 
-if ( $scheme eq "https" ) { $str = "./check_http -H $hostname -f ok -S".$path;}
-if ( $scheme eq "http") { $str = "./check_http -H $hostname -f ok -p $port".$path;}
+my $command = "/usr/local/nagios/libexec/check_http";
 
-$result = `$str`;
-
+my $result=`$command $str`;
 print $result;
-$ret_code = $?>>8;
-exit "$ret_code";
+
+$?=$?>>8;
+exit $?;
